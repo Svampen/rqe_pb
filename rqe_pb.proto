@@ -1,0 +1,138 @@
+syntax = "proto3";
+
+message NodeInfo {
+    string name = 1;
+    NodeStatus node_status = 2;
+    sint32 rq_count = 3;
+}
+
+enum NodeStatus {
+    ONLINE = 0;
+    OFFLINE = 1;
+    TEMP_OFFLINE = 2;
+    UNKNOWN = 3;
+}
+
+message ResponseStatus {
+    enum Status {
+        OK = 0;
+        NOK = 1;
+    }
+    Status status = 1;
+    string reason = 2;
+}
+
+message StatusRequest {
+}
+
+message StatusResponse {
+    repeated NodeInfo node_info = 1;
+    ResponseStatus response_status = 2;
+}
+
+message RQItemTypeOptions {
+    enum Operator {
+        NULL = 0;
+        GT = 1;
+        LT = 2;
+        GTE = 3;
+        LTE = 4;
+        AND = 5;
+        NOT = 6;
+        COUNT = 7;
+    }
+    Operator operator = 1;
+    int32 count = 2;
+}
+
+message RQItem {
+    string key = 1;
+    oneof value {
+        sint32 integer = 2;
+        string string = 3;
+        RQ rq = 4;
+        bool boolean = 5;
+    }
+    RQItemTypeOptions type_options = 6;
+}
+
+message RQLabel {
+    string key = 1;
+    string value = 2;
+}
+
+message RQ {
+    repeated RQItem rq_items = 1;
+    string uuid = 2;
+}
+
+message AddRQRequest {
+    RQ rq = 1;
+    RQLabels labels = 2;
+}
+
+message RQLabels {
+    repeated RQLabel labels = 1;
+}
+message AddRQResponse {
+    string uuid = 1;
+    ResponseStatus response_status = 4;
+}
+
+message DeleteRQRequest {
+    string uuid = 1;
+}
+
+message DeleteRQResponse {
+    ResponseStatus response_status = 1;
+}
+
+message GetRQRequest {
+    oneof field {
+        string uuid = 1;
+        RQLabels labels = 2;
+    }
+}
+
+message GetRQResponse {
+    ResponseStatus response_status = 1;
+    RQ rq = 2;
+    RQLabels labels = 3;
+}
+
+message MatchEntryRequest {
+    message EntryValue {
+        oneof value {
+            string string = 1;
+            sint32 integer = 2;
+            bool boolean = 3;
+        }
+    }
+    map<string, EntryValue> entry = 1;
+    int32 timeout = 2;
+}
+
+message MatchEntryResponse {
+    ResponseStatus response_status = 1;
+    repeated RQ rqs = 2;
+}
+
+message Request {
+    oneof msg {
+        StatusRequest status_request = 1;
+        AddRQRequest add_rq_request = 2;
+        DeleteRQRequest delete_rq_request = 3;
+        GetRQRequest get_rq_request = 4;
+        MatchEntryRequest match_entry_request = 5;
+    }
+}
+
+message Response {
+    oneof msg {
+        StatusResponse status_response = 1;
+        AddRQResponse add_rq_response = 2;
+        DeleteRQResponse delete_rq_response = 3;
+        GetRQResponse get_rq_response = 4;
+        MatchEntryResponse match_entry_response = 5;
+    }
+}
