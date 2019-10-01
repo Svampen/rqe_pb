@@ -17,21 +17,11 @@ enum NodeStatus {
     UNKNOWN = 3;
 }
 
-message ResponseStatus {
-    enum Status {
-        OK = 0;
-        NOK = 1;
-    }
-    Status status = 1;
-    string reason = 2;
-}
-
 message StatusRequest {
 }
 
 message StatusResponse {
     repeated NodeInfo node_info = 1;
-    ResponseStatus response_status = 2;
 }
 
 message RQItemTypeOptions {
@@ -80,7 +70,6 @@ message RQLabels {
 }
 message AddRQResponse {
     string uuid = 1;
-    ResponseStatus response_status = 4;
 }
 
 message DeleteRQRequest {
@@ -88,7 +77,6 @@ message DeleteRQRequest {
 }
 
 message DeleteRQResponse {
-    ResponseStatus response_status = 1;
 }
 
 message GetRQRequest {
@@ -99,9 +87,8 @@ message GetRQRequest {
 }
 
 message GetRQResponse {
-    ResponseStatus response_status = 1;
-    RQ rq = 2;
-    RQLabels labels = 3;
+    RQ rq = 1;
+    RQLabels labels = 2;
 }
 
 message MatchEntryRequest {
@@ -117,8 +104,7 @@ message MatchEntryRequest {
 }
 
 message MatchEntryResponse {
-    ResponseStatus response_status = 1;
-    repeated RQ rqs = 2;
+    repeated RQ rqs = 1;
 }
 
 message Request {
