@@ -1,5 +1,9 @@
 syntax = "proto3";
 
+service rqeService {
+    rpc rqeMessage (Request) returns (Response) {}
+}
+
 message NodeInfo {
     string name = 1;
     NodeStatus node_status = 2;
