@@ -107,6 +107,14 @@ message MatchEntryResponse {
     repeated RQ rqs = 1;
 }
 
+message AddNodeRequest {
+    string node = 1;
+    string module = 2;
+}
+
+message AddNodeResponse {
+}
+
 message Request {
     oneof msg {
         StatusRequest status_request = 1;
@@ -114,6 +122,7 @@ message Request {
         DeleteRQRequest delete_rq_request = 3;
         GetRQRequest get_rq_request = 4;
         MatchEntryRequest match_entry_request = 5;
+        AddNodeRequest add_node_request = 6;
     }
 }
 
@@ -124,5 +133,6 @@ message Response {
         DeleteRQResponse delete_rq_response = 3;
         GetRQResponse get_rq_response = 4;
         MatchEntryResponse match_entry_response = 5;
+        AddNodeResponse add_node_response = 6;
     }
 }
